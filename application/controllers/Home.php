@@ -354,13 +354,8 @@ class Home extends CI_Controller {
 	{
 		$user = $this->check_login();
 		$_POST['user_id'] = $user['user_id'];
-		$images = explode(',', $_POST['images'][0]);
-		unset($_POST['images']);
 		if ($this->db->insert('blacklist', $_POST)) {
 			$id = $this->db->insert_id();
-			foreach ($images as $key => $value) {
-				$this->db->insert('images', array('blacklist_id' => $id, 'image' => $value));
-			}
 			$this->session->set_flashdata('msg', 'Record Added');
 		}else{
 			$this->session->set_flashdata('msg', 'Something Went Wrong');
@@ -371,7 +366,7 @@ class Home extends CI_Controller {
 	{
 		$user = $this->check_login();
 		$aid = $_POST['aid'];
-		unset($_POST['aid'], $_POST['images'], $_POST['mode'], $_POST['security']);
+		unset($_POST['aid'], $_POST['mode'], $_POST['security']);
 		$this->db->where("blacklist_id",$aid);
 		$data = $this->db->update("blacklist", $_POST);
 		if($data)
